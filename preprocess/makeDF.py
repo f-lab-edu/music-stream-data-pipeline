@@ -2,10 +2,12 @@ import pandas as pd
 import json
 import pathlib
 
+
 class PathConfig:
     def __init__(self):
         self.project_path = pathlib.Path(__file__).parent.resolve()
         self.data_path = f"{self.project_path}/data"
+
 
 class EventDataframe:
     def read_json_file(self, file_path):
