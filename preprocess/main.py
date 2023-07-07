@@ -1,13 +1,12 @@
 import pandas as pd
-
 from preprocess.makeDF import EventDataframe, PathConfig
 from preprocess.postgre import SQLWriter
 
 
 class Preprocess(EventDataframe, SQLWriter, PathConfig):
-    def __init__(self, conn_id, schema_name):
+    def __init__(self, conn_id):
         EventDataframe.__init__(self)
-        SQLWriter.__init__(self, conn_id, schema_name)
+        SQLWriter.__init__(self, conn_id)
         PathConfig.__init__(self)
 
     def makeDataFrame(self, file_name):

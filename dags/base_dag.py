@@ -10,10 +10,9 @@ sys.path.append(os.getcwd())
 
 from preprocess.main import Preprocess
 
-POSTGRES_CONN_ID = "db_conn_info"
-schema = "event"
+POSTGRES_CONN_ID = os.environ.get("POSTGRES_CONN_ID")
 
-preprocess = Preprocess(POSTGRES_CONN_ID, schema)
+preprocess = Preprocess(POSTGRES_CONN_ID)
 
 default_args = {
     "owner": "owner-name",
@@ -40,7 +39,7 @@ with DAG(**dag_args) as dag:
     auth_preprocessing_task = PythonOperator(
         task_id="auth_preprocessing",
         python_callable=preprocess.makeDataFrame,
-        op_kwargs={"filename": "auth_events"},
+        op_kwargs={"file_name": "auth_events"},
     )
 
     ingest_auth_into_psql = PythonOperator(

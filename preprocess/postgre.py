@@ -3,9 +3,8 @@ from sqlalchemy import create_engine
 
 
 class SQLWriter:
-    def __init__(self, conn_id, schema_name="public"):
+    def __init__(self, conn_id):
         self.conn_id = conn_id
-        self.schema_name = schema_name
 
     def connect(self):
         conn = PostgresHook(postgres_conn_id=self.conn_id)
@@ -16,6 +15,4 @@ class SQLWriter:
         return engine
 
     def write_dataframe(self, dataframe, table_name, engine):
-        dataframe.to_sql(
-            table_name, engine, schema=self.schema_name, if_exists="append", index=False
-        )
+        dataframe.to_sql(table_name, engine, if_exists="append", index=False)
