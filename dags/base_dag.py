@@ -11,18 +11,10 @@ sys.path.append(os.getcwd())
 from preprocess.main import Preprocess
 
 POSTGRES_CONN_ID = "db_conn_info"
+schema = "event"
 
-# PostgreSQL 연결 정보
-# db_host = os.environ.get("0.0.0.0")
-# db_port = os.environ.get("5432")
-# db_name = os.environ.get("postgres")
-# db_user = os.environ.get("postgres")
-# db_password = os.environ.get("1234")
-# db_schema = os.environ.get("event")
+preprocess = Preprocess(POSTGRES_CONN_ID, schema)
 
-preprocess = Preprocess(POSTGRES_CONN_ID)
-
-# Default arguments for the DAG
 default_args = {
     "owner": "owner-name",
     "depends_on_past": False,
@@ -33,7 +25,6 @@ default_args = {
     "retry_delay": timedelta(minutes=30),
 }
 
-# Arguments for the DAG
 dag_args = dict(
     dag_id="preprocess",
     default_args=default_args,
@@ -44,18 +35,57 @@ dag_args = dict(
     tags=["example"],
 )
 
-# Define the DAG
 with DAG(**dag_args) as dag:
-    # Preprocessing task
-    prepro_task = PythonOperator(
-        task_id="preprocessing", python_callable=preprocess.makeDataFrame
+
+    auth_preprocessing_task = PythonOperator(
+        task_id="auth_preprocessing",
+        python_callable=preprocess.makeDataFrame,
+        op_kwargs={"filename": "auth_events"},
     )
 
-    auth = PythonOperator(
-        task_id="writing",
+    ingest_auth_into_psql = PythonOperator(
+        task_id="auth",
         python_callable=preprocess.writeSQL,
-        op_kwargs={"file": "auth"},
+        op_kwargs={"file_name": "auth_events", "table_name": "auth"},
     )
 
-    # Define the task dependencies
-    prepro_task >> auth
+    listen_preprocessing_task = PythonOperator(
+        task_id="listen_preprocessing",
+        python_callable=preprocess.makeDataFrame,
+        op_kwargs={"file_name": "listen_events"},
+    )
+
+    ingest_listen_into_psql = PythonOperator(
+        task_id="listen",
+        python_callable=preprocess.writeSQL,
+        op_kwargs={"file_name": "listen_events", "table_name": "listen"},
+    )
+
+    page_view_preprocessing_task = PythonOperator(
+        task_id="ingest_preprocessing",
+        python_callable=preprocess.makeDataFrame,
+        op_kwargs={"file_name": "page_view_events"},
+    )
+
+    ingest_page_view_into_psql = PythonOperator(
+        task_id="page_view",
+        python_callable=preprocess.writeSQL,
+        op_kwargs={"file_name": "page_view_events", "table_name": "page_view"},
+    )
+
+    status_preprocessing_task = PythonOperator(
+        task_id="status_preprocessing",
+        python_callable=preprocess.makeDataFrame,
+        op_kwargs={"file_name": "status_change_events"},
+    )
+
+    ingest_status_into_psql = PythonOperator(
+        task_id="status",
+        python_callable=preprocess.writeSQL,
+        op_kwargs={"file_name": "status_change_events", "table_name": "status_change"},
+    )
+
+    auth_preprocessing_task >> ingest_auth_into_psql
+    listen_preprocessing_task >> ingest_listen_into_psql
+    page_view_preprocessing_task >> ingest_page_view_into_psql
+    status_preprocessing_task >> ingest_status_into_psql
