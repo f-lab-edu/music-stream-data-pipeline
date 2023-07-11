@@ -28,6 +28,9 @@ jobs:
         python -m pip install --upgrade pip
         pip install flake8 pytest
         pip install pandas
+        pip install apache-airflow
+        pip install apache-airflow-providers-postgres
+        pip install SQLAlchemy
         python setup.py install
     - name: Lint with flake8
       run: |
