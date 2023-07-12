@@ -31,6 +31,7 @@ jobs:
         pip install apache-airflow
         pip install apache-airflow-providers-postgres
         pip install SQLAlchemy
+        pip install pytest-mock
         python setup.py install
     - name: Lint with flake8
       run: |
