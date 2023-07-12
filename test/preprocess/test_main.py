@@ -6,6 +6,8 @@ def test_makeDataFrame(preprocess):
     file_name = "example.json"
     file_path = f"{preprocess.data_path}/{file_name}"
 
+    if not os.path.exists(preprocess.data_path):
+        os.mkdir(preprocess.data_path)
     with open(file_path, "w") as file:
         file.write('{"name": "Alice", "age": 25}\n{"name": "Bob", "age": 30}')
 
