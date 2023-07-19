@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 from airflow import DAG
 from airflow.operators.python import PythonOperator
+from typing import Final
 
 import sys
 import os
@@ -9,10 +10,9 @@ sys.path.append(os.getcwd())
 
 from preprocess.main import Preprocess
 
-POSTGRES_CONN_ID = os.environ.get("POSTGRES_CONN_ID")
-OBJECT_STORAGE_CONN_ID = os.environ.get("OBJECT_STORAGE_CONN_ID")
-BUCKET_NAME = os.environ.get("BUCKET_NAME")
-today_date = datetime.now().date()
+POSTGRES_CONN_ID: Final[str] = os.environ.get("POSTGRES_CONN_ID")
+OBJECT_STORAGE_CONN_ID: Final[str] = os.environ.get("OBJECT_STORAGE_CONN_ID")
+BUCKET_NAME: Final[str] = os.environ.get("BUCKET_NAME")
 
 preprocess = Preprocess(
     db_conn_id=POSTGRES_CONN_ID,
@@ -45,7 +45,7 @@ with DAG(**dag_args) as dag:
     auth_preprocessing_task = PythonOperator(
         task_id="auth_preprocessing",
         python_callable=preprocess.make_df,
-        op_kwargs={"date": f"{today_date}", "id": "auth"},
+        op_kwargs={"date": "{{ execution_date | ds }}", "id": "auth"},
     )
 
     ingest_auth_into_psql = PythonOperator(
@@ -57,7 +57,7 @@ with DAG(**dag_args) as dag:
     listen_preprocessing_task = PythonOperator(
         task_id="listen_preprocessing",
         python_callable=preprocess.make_df,
-        op_kwargs={"date": f"{today_date}", "id": "listen"},
+        op_kwargs={"date": "{{ execution_date | ds }}", "id": "listen"},
     )
 
     ingest_listen_into_psql = PythonOperator(
@@ -69,7 +69,7 @@ with DAG(**dag_args) as dag:
     page_view_preprocessing_task = PythonOperator(
         task_id="ingest_preprocessing",
         python_callable=preprocess.make_df,
-        op_kwargs={"date": f"{today_date}", "id": "page_view"},
+        op_kwargs={"date": "{{ execution_date | ds }}", "id": "page_view"},
     )
 
     ingest_page_view_into_psql = PythonOperator(
@@ -81,7 +81,7 @@ with DAG(**dag_args) as dag:
     status_preprocessing_task = PythonOperator(
         task_id="status_preprocessing",
         python_callable=preprocess.make_df,
-        op_kwargs={"date": f"{today_date}", "id": "status_change"},
+        op_kwargs={"date": "{{ execution_date | ds }}", "id": "status_change"},
     )
 
     ingest_status_into_psql = PythonOperator(
