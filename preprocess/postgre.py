@@ -21,7 +21,6 @@ class SQLWriter:
         data = hook.read_key(
             key=f"{str(id)}/{date}/{id}_event.csv", bucket_name=self.bucket_name
         )
-        # Convert CSV string to DataFrame
         dataframe = pd.read_csv(io.StringIO(data))
         return dataframe
 
