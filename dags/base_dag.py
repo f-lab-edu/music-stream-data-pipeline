@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 from airflow import DAG
 from airflow.operators.python import PythonOperator
-from typing import Final
+from typing_extensions import Final
 
 import sys
 import os
@@ -51,7 +51,11 @@ with DAG(**dag_args) as dag:
     ingest_auth_into_psql = PythonOperator(
         task_id="auth",
         python_callable=preprocess.write_sql,
-        op_kwargs={"task_id": "auth_preprocessing", "table_name": "auth"},
+        op_kwargs={
+            "date": "{{ execution_date | ds }}",
+            "id": "auth",
+            "table_name": "auth",
+        },
     )
 
     listen_preprocessing_task = PythonOperator(
@@ -63,7 +67,11 @@ with DAG(**dag_args) as dag:
     ingest_listen_into_psql = PythonOperator(
         task_id="listen",
         python_callable=preprocess.write_sql,
-        op_kwargs={"task_id": "listen_preprocessing", "table_name": "listen"},
+        op_kwargs={
+            "date": "{{ execution_date | ds }}",
+            "id": "listen",
+            "table_name": "listen",
+        },
     )
 
     page_view_preprocessing_task = PythonOperator(
@@ -75,7 +83,11 @@ with DAG(**dag_args) as dag:
     ingest_page_view_into_psql = PythonOperator(
         task_id="page_view",
         python_callable=preprocess.write_sql,
-        op_kwargs={"task_id": "ingest_preprocessing", "table_name": "page_view"},
+        op_kwargs={
+            "date": "{{ execution_date | ds }}",
+            "id": "page_view",
+            "table_name": "page_view",
+        },
     )
 
     status_preprocessing_task = PythonOperator(
@@ -87,7 +99,11 @@ with DAG(**dag_args) as dag:
     ingest_status_into_psql = PythonOperator(
         task_id="status_change",
         python_callable=preprocess.write_sql,
-        op_kwargs={"task_id": "status_preprocessing", "table_name": "status_change"},
+        op_kwargs={
+            "date": "{{ execution_date | ds }}",
+            "id": "status_change",
+            "table_name": "status_change",
+        },
     )
 
     auth_preprocessing_task >> ingest_auth_into_psql
