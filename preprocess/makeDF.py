@@ -1,21 +1,38 @@
 import pandas as pd
 import json
-import pathlib
+from airflow.providers.amazon.aws.hooks.s3 import S3Hook
 
 
-class PathConfig:
-    def __init__(self):
-        self.project_path = pathlib.Path(__file__).parent.resolve()
-        self.data_path = f"{self.project_path}/data"
+class GetS3Hook:
+    def __init__(self, conn_s3):
+        self.conn_s3 = conn_s3
+
+    def get_s3_hook(self):
+        s3hook = S3Hook(self.conn_s3)
+        return s3hook
 
 
 class EventDataframe:
-    def read_json_file(self, file_path):
-        with open(file_path) as file:
-            data = [json.loads(line) for line in file]
+    def __init__(self, bucket_name):
+        self.bucket_name = bucket_name
+
+    def read_json_file(self, hook, date, id):
+        data = hook.read_key(
+            key=f"{str(id)}/{date}/{id}_event.json", bucket_name=self.bucket_name
+        )
+        data = [json.loads(line) for line in data[:-1].split("\n")]
         return pd.DataFrame(data)
 
-    def make_dataframe(self, file_name):
-        data = self.read_json_file(file_name)
-        dataframe = pd.DataFrame(data)
-        return dataframe
+    def make_dataframe(self, hook, date, id):
+        dataframe = self.read_json_file(hook, date, id)
+        dataframe["userAgent"] = dataframe["userAgent"].apply(
+            lambda x: f'"{x}"' if not x.startswith('"') else x
+        )
+
+        csv_string = dataframe.to_csv(index=False)
+
+        hook.load_string(
+            string_data=csv_string,
+            key=f"{str(id)}/{date}/{id}_event.csv",
+            bucket_name=self.bucket_name,
+        )
