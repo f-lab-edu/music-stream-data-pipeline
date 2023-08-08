@@ -1,6 +1,5 @@
 from abc import ABC, abstractmethod
 from pyspark.sql import SparkSession, dataframe
-from datetime import datetime
 from schema import schema
 
 
@@ -11,14 +10,14 @@ class EventDataFrameProcessor(ABC):
 
     @abstractmethod
     def read_json_file(
-        self, spark: SparkSession, date: datetime, id: str
+        self, spark: SparkSession, date: str, id: str
     ) -> dataframe.DataFrame:
         pass
 
     @abstractmethod
     def save_dataframe_as_parquet(
         self,
-        date: datetime,
+        date: str,
         id: str,
         dataframe: dataframe.DataFrame,
     ) -> None:
@@ -39,7 +38,7 @@ class BaseDataFrameProcessor(EventDataFrameProcessor):
         return spark
 
     def read_json_file(
-        self, spark: SparkSession, date: datetime, id: str
+        self, spark: SparkSession, date: str, id: str
     ) -> dataframe.DataFrame:
         data = spark.read.json(
             f"s3a://{self.bucket_name}/{id}/{date}/{id}_event.json",
@@ -50,7 +49,7 @@ class BaseDataFrameProcessor(EventDataFrameProcessor):
 
     def save_dataframe_as_parquet(
         self,
-        date: datetime,
+        date: str,
         id: str,
         data: dataframe.DataFrame,
     ) -> None:
@@ -58,6 +57,5 @@ class BaseDataFrameProcessor(EventDataFrameProcessor):
             f"s3a://{self.bucket_name}/{id}/{date}/{id}_event", mode="overwrite"
         )
 
-    @abstractmethod
     def preprocess(self, dataframe: dataframe.DataFrame) -> dataframe.DataFrame:
         pass
