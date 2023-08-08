@@ -1,6 +1,5 @@
 from event_dataframe_processor import BaseDataFrameProcessor
 from pyspark.sql import dataframe
-from datetime import datetime
 
 
 class AuthDataFrameProcessor(BaseDataFrameProcessor):

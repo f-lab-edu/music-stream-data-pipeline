@@ -1,19 +1,9 @@
-# Copyright (c) Jupyter Development Team.
-# Distributed under the terms of the Modified BSD License.
-ARG OWNER=jupyter
-ARG BASE_CONTAINER=$OWNER/scipy-notebook
-FROM $BASE_CONTAINER
+FROM ubuntu:20.04
 
-LABEL maintainer="Jupyter Project <jupyter@googlegroups.com>"
-
-# Fix DL4006
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 USER root
 
-# Spark dependencies
-# Default values can be overridden at build time
-# (ARGS are in lower case to distinguish them from ENV)
 ARG spark_version="3.1.2"
 ARG hadoop_version="3.2"
 ARG spark_checksum="2385CB772F21B014CE2ABD6B8F5E815721580D6E8BC42A26D70BBCDDA8D303D886A6F12B36D40F6971B5547B70FAE62B5A96146F0421CB93D4E51491308EF5D5"
@@ -35,6 +25,10 @@ RUN apt-get update --yes && \
     awscli && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
+RUN apt-get update -y && \
+    apt-get install -y python3-pip python3-dev \
+    build-essential libssl-dev libffi-dev python3-setuptools
+RUN apt-get install wget -y
 
 # Install requirements
 COPY requirements.txt ./
@@ -74,13 +68,8 @@ RUN wget https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-aws/${AWS_HADOO
 RUN wget https://repo1.maven.org/maven2/net/java/dev/jets3t/jets3t/0.9.4/jets3t-0.9.4.jar -P "${SPARK_HOME}/jars/"
 
 
-# Install pyarrow
-RUN mamba install --quiet --yes \
-    'pyarrow' && \
-    mamba clean --all -f -y && \
-    fix-permissions "${CONDA_DIR}" && \
-    fix-permissions "/home/${NB_USER}"
-USER ${NB_UID}
+WORKDIR /usr/local/spark/work-dir
+COPY ./ ./
 
-
-WORKDIR "${HOME}"
+# Start Spark's entrypoint script
+CMD ["tail", "-f", "/bin/bash"]

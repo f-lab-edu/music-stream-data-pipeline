@@ -43,7 +43,7 @@ class BaseDataFrameProcessor(EventDataFrameProcessor):
     ) -> dataframe.DataFrame:
         data = spark.read.json(
             f"s3a://{self.bucket_name}/{id}/{date}/{id}_event.json",
-            schema=schema["{id}_events"],
+            schema=schema[f"{id}_events"],
         )
 
         return data
@@ -55,7 +55,7 @@ class BaseDataFrameProcessor(EventDataFrameProcessor):
         data: dataframe.DataFrame,
     ) -> None:
         data.write.parquet(
-            f"s3a://{self.bucket_name}/{id}/{date}/{id}_event.parquet", mode="overwrite"
+            f"s3a://{self.bucket_name}/{id}/{date}/{id}_event", mode="overwrite"
         )
 
     @abstractmethod
