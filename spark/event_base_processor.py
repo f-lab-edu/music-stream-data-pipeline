@@ -54,7 +54,7 @@ class BaseDataFrameProcessor(EventDataFrameProcessor):
         data: dataframe.DataFrame,
     ) -> None:
         if not data.rdd.isEmpty():
-            data.write.partitionBy("date_id").parquet(
+            data.write.partitionBy(date).parquet(
                 f"s3a://{self.bucket_name}/{id}/{id}_event", mode="append"
             )
 
