@@ -24,7 +24,7 @@ class EventDataFrameProcessor(ABC):
         raise NotImplementedError()
 
     @abstractmethod
-    def preprocess(self, dataframe: dataframe.DataFrame) -> dataframe.DataFrame:
+    def drop_table(self, dataframe: dataframe.DataFrame) -> dataframe.DataFrame:
         raise NotImplementedError()
 
 
@@ -54,9 +54,22 @@ class BaseDataFrameProcessor(EventDataFrameProcessor):
         data: dataframe.DataFrame,
     ) -> None:
         if not data.rdd.isEmpty():
-            data.write.partitionBy(date).parquet(
-                f"s3a://{self.bucket_name}/{id}/{id}_event", mode="append"
+            data.write.parquet(
+                f"s3a://{self.bucket_name}/{id}/{date}/{id}_event", mode="append"
             )
 
-    def preprocess(self, dataframe: dataframe.DataFrame) -> dataframe.DataFrame:
+    def add_state_code(
+        self, spark: SparkSession, data: dataframe.DataFrame
+    ) -> dataframe.DataFrame:
+        statecode = spark.read.csv(
+            "data/state_codes.csv", header=True, inferSchema=True
+        )
+
+        data = data.join(
+            statecode, data["state"] == statecode["stateCode"], "left"
+        ).drop(statecode["stateCode"])
+
+        return data
+
+    def drop_table(self, data: dataframe.DataFrame) -> dataframe.DataFrame:
         pass

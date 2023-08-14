@@ -48,7 +48,8 @@ def main() -> None:
     )
 
     data = processor.read_json_file(spark, sys.argv[3], processor_type)
-    data = processor.preprocess(data)
+    data = processor.add_state_code(spark, data)
+    data = processor.drop_table(data)
     processor.save_dataframe_as_parquet(sys.argv[3], processor_type, data)
 
 
