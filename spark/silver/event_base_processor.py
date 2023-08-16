@@ -58,7 +58,7 @@ class BaseDataFrameProcessor(EventDataFrameProcessor):
                 f"s3a://{self.bucket_name}/{id}/{date}/{id}_event", mode="append"
             )
 
-    def add_state_code(
+    def add_state_name(
         self, spark: SparkSession, data: dataframe.DataFrame
     ) -> dataframe.DataFrame:
         statecode = spark.read.csv(
