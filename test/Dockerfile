@@ -16,7 +16,7 @@ ENV APACHE_SPARK_VERSION="${spark_version}" \
     HADOOP_VERSION="${hadoop_version}" \
     AWS_SDK_VERSION="${aws_sdk_version}" \
     AWS_HADOOP_VERSION="${aws_hadoop_version}"\
-    PYTHONPATH="/usr/local/spark/work-dir:$PYTHONPATH"
+    PYTHONPATH="/usr/local/spark/project:$PYTHONPATH"
 
 RUN apt-get update --yes && \
     apt-get install --yes --no-install-recommends \
@@ -61,8 +61,6 @@ RUN wget https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-aws/${AWS_HADOO
 RUN wget https://repo1.maven.org/maven2/net/java/dev/jets3t/jets3t/0.9.4/jets3t-0.9.4.jar -P "${SPARK_HOME}/jars/"
 
 
-WORKDIR /usr/local/spark/work-dir
-
-COPY ../ /usr/local/spark/project
+WORKDIR /usr/local/spark/project
 
 CMD ["tail", "-f", "/bin/bash"]

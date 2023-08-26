@@ -27,4 +27,4 @@ jobs:
 
     - name: Run tests in Docker container
       run: |
-        docker run -t --rm spark-test-image pytest /usr/local/spark/project
+         docker run -t --rm -v ./:/usr/local/spark/project spark-test-image pytest /usr/local/spark/project
