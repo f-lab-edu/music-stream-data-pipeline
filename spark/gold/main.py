@@ -3,9 +3,6 @@ from listen_data_join import ListenDataJoinProcessor
 
 
 def main() -> None:
-    processors = {
-        "listen": ListenDataJoinProcessor,
-    }
 
     processor_type = sys.argv[1]
     bucket_name = sys.argv[2]
