@@ -14,4 +14,4 @@ repos:
     hooks:
       - id: mypy
         exclude: ^test/
-        args: [--strict, --ignore-missing-imports]
+        args: [--strict, --ignore-missing-imports, --allow-subclassing-any]
