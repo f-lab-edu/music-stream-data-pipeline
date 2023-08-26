@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from pyspark.sql import SparkSession, dataframe
 from pyspark.sql import functions as F
-from schema import schema
+from spark.silver.schema import schema
 
 
 class EventDataFrameProcessor(ABC):

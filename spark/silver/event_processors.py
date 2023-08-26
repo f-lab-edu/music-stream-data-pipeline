@@ -1,4 +1,4 @@
-from event_base_processor import BaseDataFrameProcessor
+from spark.silver.event_base_processor import BaseDataFrameProcessor
 from pyspark.sql import dataframe
 
 

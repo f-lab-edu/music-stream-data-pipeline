@@ -1,4 +1,4 @@
-from event_processors import (
+from spark.silver.event_processors import (
     AuthDataFrameProcessor,
     ListenDataFrameProcessor,
     PageViewDataFrameProcessor,
