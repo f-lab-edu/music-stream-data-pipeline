@@ -2,7 +2,6 @@ import pytest
 from unittest.mock import patch
 from pyspark.sql import SparkSession
 from spark.silver.event_processors import AuthDataFrameProcessor
-from spark.gold.listen_data_join import ListenDataJoinProcessor
 
 
 @pytest.fixture(scope="module")
