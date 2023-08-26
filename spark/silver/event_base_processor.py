@@ -65,7 +65,7 @@ class BaseDataFrameProcessor(EventDataFrameProcessor):
         self, spark: SparkSession, data: dataframe.DataFrame
     ) -> dataframe.DataFrame:
         statecode = spark.read.csv(
-            "data/state_codes.csv", header=True, inferSchema=True
+            "spark/silver/data/state_codes.csv", header=True, inferSchema=True
         )
 
         data = data.join(

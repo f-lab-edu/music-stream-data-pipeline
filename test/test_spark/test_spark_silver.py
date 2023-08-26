@@ -34,7 +34,7 @@ class TestSilverDataFrameProcessor:
         mock_data.rdd.isEmpty.return_value = False
         mock_dataframe.return_value = mock_data
 
-        test_processor.save_dataframe_as_parquet("2023-08-25", "test_id", mock_data)
+        test_processor.save_dataframe_as_parquet("test_id", mock_data)
 
         mock_data.write.parquet.assert_called_once_with(
             "s3a://test_bucket/test_id/2023-08-25/test_id_event", mode="append"
