@@ -63,4 +63,6 @@ RUN wget https://repo1.maven.org/maven2/net/java/dev/jets3t/jets3t/0.9.4/jets3t-
 
 WORKDIR /usr/local/spark/work-dir
 
+COPY ../ /usr/local/spark/project
+
 CMD ["tail", "-f", "/bin/bash"]
