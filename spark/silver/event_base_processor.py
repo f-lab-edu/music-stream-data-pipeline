@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from pyspark.sql import SparkSession, dataframe
-from schema import schema
+from pyspark.sql import functions as F
+from spark.silver.schema import schema
 
 
 class EventDataFrameProcessor(ABC):
@@ -17,10 +18,13 @@ class EventDataFrameProcessor(ABC):
     @abstractmethod
     def save_dataframe_as_parquet(
         self,
-        date: str,
         id: str,
         dataframe: dataframe.DataFrame,
     ) -> None:
+        raise NotImplementedError()
+
+    @abstractmethod
+    def add_date_id_column(self, data: dataframe.DataFrame) -> dataframe.DataFrame:
         raise NotImplementedError()
 
     @abstractmethod
@@ -49,26 +53,37 @@ class BaseDataFrameProcessor(EventDataFrameProcessor):
 
     def save_dataframe_as_parquet(
         self,
-        date: str,
         id: str,
         data: dataframe.DataFrame,
     ) -> None:
         if not data.rdd.isEmpty():
-            data.write.parquet(
-                f"s3a://{self.bucket_name}/{id}/{date}/{id}_event", mode="append"
+            data.write.partitionBy("date_id").parquet(
+                f"s3a://{self.bucket_name}/{id}/{id}_event", mode="append"
             )
 
     def add_state_name(
         self, spark: SparkSession, data: dataframe.DataFrame
     ) -> dataframe.DataFrame:
         statecode = spark.read.csv(
-            "data/state_codes.csv", header=True, inferSchema=True
+            "spark/silver/data/state_codes.csv", header=True, inferSchema=True
         )
 
         data = data.join(
             statecode, data["state"] == statecode["stateCode"], "left"
         ).drop(statecode["stateCode"])
 
+        return data
+
+    def add_date_id_column(self, data: dataframe.DataFrame) -> dataframe.DataFrame:
+        data = data.withColumn(
+            "date_id",
+            F.date_format(
+                F.to_utc_timestamp(
+                    F.from_unixtime(F.col("ts") / 1000, "yyyy-MM-dd"), "EST"
+                ),
+                "yyyy-MM-dd",
+            ),
+        )
         return data
 
     def drop_table(self, data: dataframe.DataFrame) -> dataframe.DataFrame:

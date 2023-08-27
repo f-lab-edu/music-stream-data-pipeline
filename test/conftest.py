@@ -1,22 +1,12 @@
 import pytest
 from unittest.mock import patch
-from pyspark.sql import SparkSession, dataframe
+from pyspark.sql import SparkSession
 from spark.silver.event_processors import AuthDataFrameProcessor
-from spark.gold.listen_data_join import ListenDataJoinProcessor
-from collections.abc import Generator
-from typing import Any
 
 
 @pytest.fixture(scope="module")
 def test_processor():
     return AuthDataFrameProcessor("test_bucket")
-
-
-@pytest.fixture(scope="module")
-def test_gold_processor():
-    return ListenDataJoinProcessor(
-        "test_bucket", "test_host", 6789, "test_database", "test_user", "test_password"
-    )
 
 
 @pytest.fixture(scope="module")

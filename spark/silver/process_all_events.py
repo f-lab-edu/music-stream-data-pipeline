@@ -1,4 +1,4 @@
-from event_processors import (
+from spark.silver.event_processors import (
     AuthDataFrameProcessor,
     ListenDataFrameProcessor,
     PageViewDataFrameProcessor,
@@ -23,17 +23,20 @@ def main() -> None:
     }
 
     if len(sys.argv) < 4:
-        print("Needs: <id> <bucket_id> <date>")
+        print("Needs: <processor_type> <bucket_name> <date>")
         sys.exit(1)
 
     processor_type = sys.argv[1]
+    bucket_name = sys.argv[2]
+    date = sys.argv[3]
+
     processor_class = processors.get(processor_type)
 
     if not processor_class:
         print("Invalid processor type.")
         sys.exit(1)
 
-    processor = processor_class(sys.argv[2])
+    processor = processor_class(bucket_name)
 
     spark = processor.get_spark_session(app_name="spark", master="local[*]")
 
@@ -47,10 +50,10 @@ def main() -> None:
         "org.apache.hadoop.fs.s3a.SimpleAWSCredentialsProvider",
     )
 
-    data = processor.read_json_file(spark, sys.argv[3], processor_type)
-    data = processor.add_state_code(spark, data)
+    data = processor.read_json_file(spark, date, processor_type)
+    data = processor.add_state_name(spark, data)
     data = processor.drop_table(data)
-    processor.save_dataframe_as_parquet(sys.argv[3], processor_type, data)
+    processor.save_dataframe_as_parquet(processor_type, data)
 
 
 if __name__ == "__main__":
