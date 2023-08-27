@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from pyspark.sql import SparkSession, dataframe
 from pyspark.sql import functions as F
-from fact_schema import event_schema
+from spark.gold.fact_schema import event_schema
 
 
 class ListenDataJoinBaseProcessor(ABC):
@@ -11,6 +11,10 @@ class ListenDataJoinBaseProcessor(ABC):
 
     @abstractmethod
     def read_sql(self, spark: SparkSession, query: str) -> dataframe.DataFrame:
+        raise NotImplementedError()
+
+    @abstractmethod
+    def select_columns(self, data: dataframe.DataFrame) -> dataframe.DataFrame:
         raise NotImplementedError()
 
     @abstractmethod
@@ -72,6 +76,9 @@ class ListenDataJoinProcessor(ListenDataJoinBaseProcessor):
             .option("password", self.password)
             .load()
         )
+        return result
+
+    def select_columns(self, data: dataframe.DataFrame) -> dataframe.DataFrame:
 
         music = [
             "year",
@@ -84,7 +91,7 @@ class ListenDataJoinProcessor(ListenDataJoinBaseProcessor):
             "song_id",
             "title",
         ]
-        result = result.select(music)
+        result = data.select(music)
         return result
 
     def read_event_data(
@@ -108,6 +115,7 @@ class ListenDataJoinProcessor(ListenDataJoinBaseProcessor):
             fact["song"] == dim["title"]
         )
         joined_df = fact.join(dim, join_condition, "inner")
+        joined_df = joined_df.drop("artist", "song")
 
         return joined_df
 

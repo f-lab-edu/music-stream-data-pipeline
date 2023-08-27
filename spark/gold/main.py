@@ -42,8 +42,9 @@ def main() -> None:
     )
 
     query = "select * from test.songs"
-    wide_fact = processor.read_sql(spark, query)
-    songs_dim = processor.read_event_data(spark, processor_type, date)
+    songs_dim = processor.read_sql(spark, query)
+    wide_fact = processor.read_event_data(spark, processor_type, date)
+    songs_dim = processor.select_columns(songs_dim)
     result = processor.join_fact_and_dim_table(wide_fact, songs_dim)
     result = processor.add_date_id_column(result)
     processor.save_dataframe_as_parquet(processor_type, result)
