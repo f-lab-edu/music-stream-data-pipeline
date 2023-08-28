@@ -17,6 +17,7 @@ event_schema = {
             StructField("level", StringType(), True),
             StructField("city", StringType(), True),
             StructField("state", StringType(), True),
+            StructField("stateName", StringType(), True),
             StructField("userAgent", StringType(), True),
             StructField("gender", StringType(), True),
             StructField("registration", LongType(), True),
