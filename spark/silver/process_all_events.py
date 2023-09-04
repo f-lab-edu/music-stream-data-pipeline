@@ -9,9 +9,9 @@ import os
 from typing import Optional
 from typing_extensions import Final
 
-access_key: Final[Optional[str]] = os.environ.get("access_key")
-secret_key: Final[Optional[str]] = os.environ.get("secret_key")
-endpoint_url: Final[Optional[str]] = os.environ.get("endpoint_url")
+access_key: Final[Optional[str]] = os.environ.get("NCLOUD_ACCESS_KEY")
+secret_key: Final[Optional[str]] = os.environ.get("NCLOUD_SECRET_KEY")
+endpoint_url: Final[Optional[str]] = os.environ.get("NCLOUD_ENDPOINT")
 
 
 def main() -> None:

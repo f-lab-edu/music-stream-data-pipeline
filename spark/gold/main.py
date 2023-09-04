@@ -1,5 +1,11 @@
-import sys
+import os, sys
 from listen_data_join import ListenDataJoinProcessor
+from typing import Optional
+from typing_extensions import Final
+
+access_key: Final[Optional[str]] = os.environ.get("NCLOUD_ACCESS_KEY")
+secret_key: Final[Optional[str]] = os.environ.get("NCLOUD_SECRET_KEY")
+endpoint_url: Final[Optional[str]] = os.environ.get("NCLOUD_ENDPOINT")
 
 
 def main() -> None:
@@ -7,17 +13,14 @@ def main() -> None:
     processor_type = sys.argv[1]
     bucket_name = sys.argv[2]
     date = sys.argv[3]
-    access_key = sys.argv[4]
-    secret_key = sys.argv[5]
-    endpoint_url = sys.argv[6]
-    database_url = sys.argv[7]
-    database_name = sys.argv[8]
-    database_id = sys.argv[9]
-    database_pwd = sys.argv[10]
+    database_url = sys.argv[4]
+    database_name = sys.argv[5]
+    database_id = sys.argv[6]
+    database_pwd = sys.argv[7]
 
     if len(sys.argv) < 10:
         print(
-            "Needs: <processor_type> <bucket_name> <date> <access_key> <secret_key> <endpoint_url> <database_url> <database_name> <database_id> <database_pwd>"
+            "Needs: <processor_type> <bucket_name> <date> <database_url> <database_name> <database_id> <database_pwd>"
         )
         sys.exit(1)
 
