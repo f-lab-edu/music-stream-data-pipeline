@@ -53,6 +53,7 @@ def main() -> None:
     data = processor.read_json_file(spark, date, processor_type)
     data = processor.add_state_name(spark, data)
     data = processor.drop_table(data)
+    data = processor.add_date_id_column(data)
     processor.save_dataframe_as_parquet(processor_type, data)
 
 
