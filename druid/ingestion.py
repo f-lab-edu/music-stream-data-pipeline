@@ -41,7 +41,7 @@ def main() -> None:
     }
 
     ingestion_spec = {
-        "type": "index",
+        "type": "index_parallel",
         "spec": {
             "ioConfig": {
                 "type": "index",
@@ -56,6 +56,7 @@ def main() -> None:
                 },
                 "inputFormat": {"type": "parquet"},
             },
+            "tuningConfig": {"type": "index-parallel", "maxRowPerSegment": 1000000},
             "dataSchema": data_schema,
         },
     }
