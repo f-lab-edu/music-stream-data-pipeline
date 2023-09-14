@@ -5,6 +5,7 @@ from airflow.models import DAG
 from airflow.providers.cncf.kubernetes.operators.spark_kubernetes import (
     SparkKubernetesOperator,
 )
+from airflow.providers.apache.druid.operators.druid import DruidOperator
 
 DAG_ID = "spark_operator_dags"
 
@@ -50,7 +51,14 @@ with DAG(
         task_id="listen_gold",
     )
 
+    auth_event_ingestion = DruidOperator(
+        json_index_file="druid_application/auth_ingestion.json",
+        druid_ingest_conn_id="druid_connection",
+        task_id="auth_ingestion",
+    )
+
     auth_silver_table_task
     listen_silver_table_task >> listen_gold_table_task
     page_view_silver_table_task
     status_change_silver_table_task
+    auth_event_ingestion
