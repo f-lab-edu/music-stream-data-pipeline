@@ -6,7 +6,7 @@
             "inputSource": {
                 "type": "s3",
                 "prefixes": [
-                    "s3://{{var.value.get("bucket_name")}}/auth/auth_event/date_id={{yesterday_ds}}"
+                    "s3://{{var.value.get("bucket_name")}}/status_change/status_change_event/date_id={{yesterday_ds}}"
                 ],
                 "endpointConfig": {
                     "url": "{{var.value.get("endpoint_url")}}",
@@ -21,9 +21,8 @@
                 "type": "parquet"
             }
         },
-
         "dataSchema": {
-            "dataSource": "auth-{{ ds }}-{{ task_instance.try_number }}",
+            "dataSource": "status-change-{{ ds }}-{{ task_instance.try_number }}",
             "timestampSpec": {
                 "column": "ts",
                 "format": "millis"
@@ -55,7 +54,19 @@
                         "type": "long"
                     },
                     {
-                        "name": "success",
+                        "name": "page",
+                        "type": "string"
+                    },
+                    {
+                        "name": "method",
+                        "type": "string"
+                    },
+                    {
+                        "name": "status",
+                        "type": "float"
+                    },
+                    {
+                        "name": "auth",
                         "type": "string"
                     }
                 ]

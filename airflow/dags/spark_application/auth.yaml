@@ -11,7 +11,7 @@ spec:
   imagePullPolicy: IfNotPresent
   imagePullSecrets: ["my-registry-secret"]
   mainApplicationFile: local:///opt/spark/examples/spark/silver/process_all_events.py
-  arguments: ["auth", {{var.value.get("bucket_name")}}, {{ds}}]
+  arguments: ["auth", {{var.value.get("bucket_name")}}, {{yesterday_ds}}]
   sparkVersion: "3.1.1"
   restartPolicy:
     type: OnFailure

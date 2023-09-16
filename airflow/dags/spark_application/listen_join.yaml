@@ -13,7 +13,7 @@ spec:
   mainApplicationFile: local:///opt/spark/examples/spark/gold/main.py
   deps:
     jars: ["local:///opt/spark/examples/spark/gold/postgresql/postgresql-42.5.4.jar"]
-  arguments: ["listen", {{var.value.get("bucket_name")}},  {{ds}}, {{var.value.get("obj_public_key")}}, {{var.value.get("obj_secret_key")}}, {{var.value.get("endpoint_url")}},  {{var.value.get("db_host")}}, {{var.value.get("db_schema")}}, {{var.value.get("db_id")}}, {{var.value.get("db_password")}}]
+  arguments: ["listen", {{var.value.get("bucket_name")}},  {{yesterday_ds}}, {{var.value.get("obj_public_key")}}, {{var.value.get("obj_secret_key")}}, {{var.value.get("endpoint_url")}},  {{var.value.get("db_host")}}, {{var.value.get("db_schema")}}, {{var.value.get("db_id")}}, {{var.value.get("db_password")}}]
   sparkVersion: "3.1.1"
   restartPolicy:
     type: OnFailure

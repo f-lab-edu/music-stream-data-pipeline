@@ -6,7 +6,7 @@
             "inputSource": {
                 "type": "s3",
                 "prefixes": [
-                    "s3://{{var.value.get("bucket_name")}}/auth/auth_event/date_id={{yesterday_ds}}"
+                    "s3://{{var.value.get("bucket_name")}}/listen/listen_joined_event/date_id={{yesterday_ds}}"
                 ],
                 "endpointConfig": {
                     "url": "{{var.value.get("endpoint_url")}}",
@@ -21,15 +21,30 @@
                 "type": "parquet"
             }
         },
-
         "dataSchema": {
-            "dataSource": "auth-{{ ds }}-{{ task_instance.try_number }}",
+            "dataSource": "listen-{{ ds }}-{{ task_instance.try_number }}",
             "timestampSpec": {
                 "column": "ts",
                 "format": "millis"
             },
             "dimensionsSpec": {
                 "dimensions": [
+                    {
+                        "name": "artist_name",
+                        "type": "string"
+                    },
+                    {
+                        "name": "title",
+                        "type": "string"
+                    },
+                    {
+                        "name": "duration",
+                        "type": "double"
+                    },
+                    {
+                        "name": "auth",
+                        "type": "string"
+                    },
                     {
                         "name": "level",
                         "type": "string"
@@ -55,8 +70,32 @@
                         "type": "long"
                     },
                     {
-                        "name": "success",
+                        "name": "key",
+                        "type": "float"
+                    },
+                    {
+                        "name": "key_confidence",
+                        "type": "double"
+                    },
+                    {
+                        "name": "loudness",
+                        "type": "double"
+                    },
+                    {
+                        "name": "song_hotttnesss",
+                        "type": "double"
+                    },
+                    {
+                        "name": "tempo",
+                        "type": "double"
+                    },
+                    {
+                        "name": "song_id",
                         "type": "string"
+                    },
+                    {
+                        "name": "year",
+                        "type": "float"
                     }
                 ]
             }

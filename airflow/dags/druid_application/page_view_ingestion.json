@@ -6,7 +6,7 @@
             "inputSource": {
                 "type": "s3",
                 "prefixes": [
-                    "s3://{{var.value.get("bucket_name")}}/auth/auth_event/date_id={{yesterday_ds}}"
+                    "s3://{{var.value.get("bucket_name")}}/page_view/page_view_event/date_id={{yesterday_ds}}"
                 ],
                 "endpointConfig": {
                     "url": "{{var.value.get("endpoint_url")}}",
@@ -21,9 +21,8 @@
                 "type": "parquet"
             }
         },
-
         "dataSchema": {
-            "dataSource": "auth-{{ ds }}-{{ task_instance.try_number }}",
+            "dataSource": "page-view-{{ ds }}-{{ task_instance.try_number }}",
             "timestampSpec": {
                 "column": "ts",
                 "format": "millis"
@@ -53,10 +52,6 @@
                     {
                         "name": "registration",
                         "type": "long"
-                    },
-                    {
-                        "name": "success",
-                        "type": "string"
                     }
                 ]
             }
