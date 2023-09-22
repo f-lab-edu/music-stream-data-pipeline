@@ -68,7 +68,9 @@ class BaseDataFrameProcessor(EventDataFrameProcessor):
             "spark/silver/data/state_codes.csv", header=True, inferSchema=True
         )
 
-        data = data.join(statecode, data["state"] == statecode["stateCode"], "left")
+        data = data.join(
+            statecode, data["state"] == statecode["stateCode"], "left"
+        ).drop(statecode["stateCode"])
 
         return data
 
