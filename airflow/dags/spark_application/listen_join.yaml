@@ -8,7 +8,7 @@ spec:
   pythonVersion: "3"
   mode: cluster
   image: "airflow.kr.ncr.ntruss.com/spark-py:v2"
-  imagePullPolicy: IfNotPresent
+  imagePullPolicy: Always
   imagePullSecrets: ["my-registry-secret"]
   mainApplicationFile: local:///opt/spark/examples/spark/gold/main.py
   deps:

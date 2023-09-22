@@ -8,10 +8,10 @@ spec:
   pythonVersion: "3"
   mode: cluster
   image: "airflow.kr.ncr.ntruss.com/spark-py:v3"
-  imagePullPolicy: IfNotPresent
+  imagePullPolicy: Always
   imagePullSecrets: ["my-registry-secret"]
   mainApplicationFile: local:///opt/spark/examples/spark/silver/process_all_events.py
-  arguments: ["listen", {{var.value.get("bucket_name")}},  {{yesterday_ds}}]
+  arguments: ["listen", {{var.value.get("bucket_name")}},  {{ds}}]
   sparkVersion: "3.1.1"
   restartPolicy:
     type: OnFailure
