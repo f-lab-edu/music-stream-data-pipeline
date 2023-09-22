@@ -54,7 +54,7 @@ Eventsim leverages song data from the [Million Songs Dataset](http://millionsong
 
 ### Final Results
 
-Still working on it...
+![streamify-2023-09-20T17-06-21 303Z](https://github.com/f-lab-edu/music-stream-data-pipeline/assets/49158155/0078cac7-c1c4-4c4e-bc0f-994bfe49e3e2)
 
 ---
 
