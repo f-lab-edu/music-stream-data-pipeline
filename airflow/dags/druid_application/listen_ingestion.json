@@ -19,10 +19,11 @@
             },
             "inputFormat": {
                 "type": "parquet"
-            }
+            },
+            "appendToExisting" : true
         },
         "dataSchema": {
-            "dataSource": "listen-{{ ds }}-{{ task_instance.try_number }}",
+            "dataSource": "listen",
             "timestampSpec": {
                 "column": "ts",
                 "format": "millis"
@@ -51,6 +52,10 @@
                     },
                     {
                         "name": "city",
+                        "type": "string"
+                    },
+                    {
+                        "name": "state",
                         "type": "string"
                     },
                     {

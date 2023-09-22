@@ -19,10 +19,11 @@
             },
             "inputFormat": {
                 "type": "parquet"
-            }
+            },
+            "appendToExisting" : true
         },
         "dataSchema": {
-            "dataSource": "status-change-{{ ds }}-{{ task_instance.try_number }}",
+            "dataSource": "status-change",
             "timestampSpec": {
                 "column": "ts",
                 "format": "millis"

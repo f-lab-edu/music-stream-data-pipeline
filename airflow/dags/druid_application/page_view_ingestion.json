@@ -19,10 +19,11 @@
             },
             "inputFormat": {
                 "type": "parquet"
-            }
+            },
+            "appendToExisting" : true
         },
         "dataSchema": {
-            "dataSource": "page-view-{{ ds }}-{{ task_instance.try_number }}",
+            "dataSource": "page-view",
             "timestampSpec": {
                 "column": "ts",
                 "format": "millis"

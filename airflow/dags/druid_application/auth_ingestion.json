@@ -19,11 +19,12 @@
             },
             "inputFormat": {
                 "type": "parquet"
-            }
+            },
+            "appendToExisting" : true
         },
 
         "dataSchema": {
-            "dataSource": "auth-{{ ds }}-{{ task_instance.try_number }}",
+            "dataSource": "auth",
             "timestampSpec": {
                 "column": "ts",
                 "format": "millis"
