@@ -6,7 +6,7 @@
             "inputSource": {
                 "type": "s3",
                 "prefixes": [
-                    "s3://{{var.value.get("bucket_name")}}/status_change/status_change_event/date_id={{yesterday_ds}}"
+                    "s3://{{var.value.get("bucket_name")}}/page_view/page_view_event/date_id={{yesterday_ds}}"
                 ],
                 "endpointConfig": {
                     "url": "{{var.value.get("endpoint_url")}}",
@@ -23,7 +23,7 @@
             "appendToExisting" : true
         },
         "dataSchema": {
-            "dataSource": "status-change",
+            "dataSource": "page-view",
             "timestampSpec": {
                 "column": "ts",
                 "format": "millis"
@@ -43,35 +43,24 @@
                         "type": "string"
                     },
                     {
-                        "name": "userAgent",
-                        "type": "string"
-                    },
-                    {
                         "name": "gender",
-                        "type": "string"
-                    },
-                    {
-                        "name": "registration",
-                        "type": "long"
-                    },
-                    {
-                        "name": "page",
-                        "type": "string"
-                    },
-                    {
-                        "name": "method",
-                        "type": "string"
-                    },
-                    {
-                        "name": "status",
-                        "type": "float"
-                    },
-                    {
-                        "name": "auth",
                         "type": "string"
                     }
                 ]
-            }
+            },
+            "metricsSpec":[
+                {
+                    "type" : "stringAny",
+                    "name" : "userAgent",
+                    "fieldName" : "userAgent"
+                },
+                {
+                    "type" : "longAny",
+                    "name" : "registration",
+                    "fieldName" : "registration"
+                }
+            ]
+        }
         }
     }
 }

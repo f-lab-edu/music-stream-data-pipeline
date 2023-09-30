@@ -44,23 +44,27 @@
                         "type": "string"
                     },
                     {
-                        "name": "userAgent",
-                        "type": "string"
-                    },
-                    {
                         "name": "gender",
                         "type": "string"
-                    },
-                    {
-                        "name": "registration",
-                        "type": "long"
                     },
                     {
                         "name": "success",
                         "type": "string"
                     }
                 ]
-            }
+            },
+            "metricsSpec":[
+                {
+                    "type" : "stringAny",
+                    "name" : "userAgent",
+                    "fieldName" : "userAgent"
+                },
+                {
+                    "type" : "longAny",
+                    "name" : "registration",
+                    "fieldName" : "registration"
+                }
+            ]
         }
     }
 }
