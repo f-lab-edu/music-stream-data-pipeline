@@ -62,13 +62,49 @@ class TestSilverDataFrameProcessor:
 
         assert result_df.collect() == expected_data.collect()
 
-    def test_drop_table(
+    def test_aggregation(
         self, test_processor: AuthDataFrameProcessor, mock_spark_session: SparkSession
     ) -> None:
         test_data = mock_spark_session.createDataFrame(
             [
-                (1, "A", "B", "12345", "John", "Doe", 12.34, 56.78, "user1"),
-                (2, "C", "D", "67890", "Jane", "Smith", 45.67, 89.12, "user2"),
+                (
+                    1,
+                    "A",
+                    "B",
+                    "12345",
+                    "John",
+                    "Doe",
+                    12.34,
+                    56.78,
+                    "user1",
+                    1632450000000,
+                    "M",
+                    "NY",
+                    "New York",
+                    "level1",
+                    "userAgent1",
+                    "New York",
+                    True,
+                ),
+                (
+                    2,
+                    "C",
+                    "D",
+                    "67890",
+                    "Jane",
+                    "Smith",
+                    45.67,
+                    89.12,
+                    "user2",
+                    1632451000000,
+                    "F",
+                    "CA",
+                    "California",
+                    "level2",
+                    "userAgent2",
+                    "Los Angeles",
+                    False,
+                ),
             ],
             [
                 "itemInSession",
@@ -79,10 +115,19 @@ class TestSilverDataFrameProcessor:
                 "lon",
                 "lat",
                 "userId",
+                "ts",
+                "gender",
+                "state",
+                "stateName",
+                "level",
+                "userAgent",
+                "city",
+                "registration",
+                "success",
             ],
         )
 
-        result_df = test_processor.drop_table(test_data)
+        result_df = test_processor.aggregation(test_data)
 
         assert "itemInSession" not in result_df.columns
         assert "sessionId" not in result_df.columns

@@ -28,7 +28,7 @@ class EventDataFrameProcessor(ABC):
         raise NotImplementedError()
 
     @abstractmethod
-    def drop_table(self, dataframe: dataframe.DataFrame) -> dataframe.DataFrame:
+    def aggregation(self, dataframe: dataframe.DataFrame) -> dataframe.DataFrame:
         raise NotImplementedError()
 
 
@@ -86,5 +86,5 @@ class BaseDataFrameProcessor(EventDataFrameProcessor):
         )
         return data
 
-    def drop_table(self, data: dataframe.DataFrame) -> dataframe.DataFrame:
+    def aggregation(self, data: dataframe.DataFrame) -> dataframe.DataFrame:
         pass

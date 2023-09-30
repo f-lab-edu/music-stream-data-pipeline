@@ -112,6 +112,11 @@
                     "type": "doubleAny",
                     "name": "tempo",
                     "fieldName": "tempo"
+                },
+                {
+                    "type": "floatAny",
+                    "name": "count",
+                    "fieldName": "event_count"
                 }
             ]
         }

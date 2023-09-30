@@ -39,6 +39,10 @@
                         "type": "string"
                     },
                     {
+                        "name": "state",
+                        "type": "string"
+                    },
+                    {
                         "name": "stateName",
                         "type": "string"
                     },
@@ -58,9 +62,13 @@
                     "type" : "longAny",
                     "name" : "registration",
                     "fieldName" : "registration"
+                },
+                {
+                    "type": "floatAny",
+                    "name": "count",
+                    "fieldName": "event_count"
                 }
             ]
-        }
         }
     }
 }
