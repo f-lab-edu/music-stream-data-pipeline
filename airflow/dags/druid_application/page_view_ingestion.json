@@ -20,10 +20,10 @@
             "inputFormat": {
                 "type": "parquet"
             },
-            "appendToExisting" : true
+            "appendToExisting": true
         },
         "dataSchema": {
-            "dataSource": "status-change",
+            "dataSource": "page-view-metric",
             "timestampSpec": {
                 "column": "ts",
                 "format": "millis"
@@ -65,26 +65,30 @@
                     {
                         "name": "auth",
                         "type": "string"
+                    },
+                    {
+                        "name": "userAgent",
+                        "type": "string"
+                    },
+                    {
+                        "name": "registration",
+                        "type": "long"
                     }
                 ]
             },
-            "metricsSpec":[
+            "metricsSpec": [
                 {
-                    "type" : "stringAny",
-                    "name" : "userAgent",
-                    "fieldName" : "userAgent"
-                },
-                {
-                    "type" : "longAny",
-                    "name" : "registration",
-                    "fieldName" : "registration"
-                },
-                {
-                    "type": "floatAny",
+                    "type": "floatSum",
                     "name": "count",
                     "fieldName": "event_count"
                 }
-            ]
+            ],
+            "granularitySpec": {
+                "type": "uniform",
+                "segmentGranularity": "DAY",
+                "queryGranularity": "HOUR",
+                "rollup": true
+            }
         }
     }
 }

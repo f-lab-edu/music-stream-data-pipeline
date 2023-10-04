@@ -39,6 +39,8 @@ def main() -> None:
     processor = processor_class(bucket_name)
 
     spark = processor.get_spark_session(app_name="spark", master="local[*]")
+    num_cores = os.cpu_count()
+    spark.conf.set("spark.sql.shuffle.partitions", num_cores)
 
     sc = spark.sparkContext._jsc.hadoopConfiguration()
     sc.set("fs.s3a.access.key", access_key)
@@ -52,7 +54,7 @@ def main() -> None:
 
     data = processor.read_json_file(spark, date, processor_type)
     data = processor.add_state_name(spark, data)
-    data = processor.drop_table(data)
+    data = processor.aggregation(data)
     data = processor.add_date_id_column(data)
     processor.save_dataframe_as_parquet(processor_type, data)
 

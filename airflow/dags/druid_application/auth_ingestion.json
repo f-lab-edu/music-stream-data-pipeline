@@ -20,11 +20,10 @@
             "inputFormat": {
                 "type": "parquet"
             },
-            "appendToExisting" : true
+            "appendToExisting": true
         },
-
         "dataSchema": {
-            "dataSource": "auth",
+            "dataSource": "auth_metric",
             "timestampSpec": {
                 "column": "ts",
                 "format": "millis"
@@ -54,26 +53,30 @@
                     {
                         "name": "success",
                         "type": "string"
+                    },
+                    {
+                        "name": "userAgent",
+                        "type": "string"
+                    },
+                    {
+                        "name": "registration",
+                        "type": "long"
                     }
                 ]
             },
-            "metricsSpec":[
+            "metricsSpec": [
                 {
-                    "type" : "stringAny",
-                    "name" : "userAgent",
-                    "fieldName" : "userAgent"
-                },
-                {
-                    "type" : "longAny",
-                    "name" : "registration",
-                    "fieldName" : "registration"
-                },
-                {
-                    "type": "floatAny",
+                    "type": "floatSum",
                     "name": "count",
                     "fieldName": "event_count"
                 }
-            ]
+            ],
+            "granularitySpec": {
+                "type": "uniform",
+                "segmentGranularity": "DAY",
+                "queryGranularity": "HOUR",
+                "rollup": true
+            }
         }
     }
 }

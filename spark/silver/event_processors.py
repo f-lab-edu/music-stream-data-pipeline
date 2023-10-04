@@ -24,7 +24,7 @@ class AuthDataFrameProcessor(BaseDataFrameProcessor):
             )
             .agg(count("*").alias("event_count"), min("ts").cast("long").alias("ts"))
             .drop("min")
-        )
+        ).coalesce(1)
 
         return data
 
@@ -52,7 +52,7 @@ class PageViewDataFrameProcessor(BaseDataFrameProcessor):
             )
             .agg(count("*").alias("event_count"), min("ts").cast("long").alias("ts"))
             .drop("min")
-        )
+        ).coalesce(1)
 
         return data
 
@@ -78,7 +78,7 @@ class ListenDataFrameProcessor(BaseDataFrameProcessor):
             )
             .agg(count("*").alias("event_count"), min("ts").cast("long").alias("ts"))
             .drop("min")
-        )
+        ).coalesce(1)
 
         return data
 
@@ -102,6 +102,6 @@ class StatusDataFrameProcessor(BaseDataFrameProcessor):
             )
             .agg(count("*").alias("event_count"), min("ts").cast("long").alias("ts"))
             .drop("min")
-        )
+        ).coalesce(1)
 
         return data

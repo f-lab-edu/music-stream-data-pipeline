@@ -20,10 +20,10 @@
             "inputFormat": {
                 "type": "parquet"
             },
-            "appendToExisting" : true
+            "appendToExisting": true
         },
         "dataSchema": {
-            "dataSource": "page-view",
+            "dataSource": "status-change",
             "timestampSpec": {
                 "column": "ts",
                 "format": "millis"
@@ -52,16 +52,16 @@
                     }
                 ]
             },
-            "metricsSpec":[
+            "metricsSpec": [
                 {
-                    "type" : "stringAny",
-                    "name" : "userAgent",
-                    "fieldName" : "userAgent"
+                    "type": "stringAny",
+                    "name": "userAgent",
+                    "fieldName": "userAgent"
                 },
                 {
-                    "type" : "longAny",
-                    "name" : "registration",
-                    "fieldName" : "registration"
+                    "type": "longAny",
+                    "name": "registration",
+                    "fieldName": "registration"
                 },
                 {
                     "type": "floatAny",
