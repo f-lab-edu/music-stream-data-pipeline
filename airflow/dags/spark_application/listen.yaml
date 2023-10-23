@@ -11,11 +11,12 @@ spec:
   imagePullPolicy: Always
   imagePullSecrets: ["my-registry-secret"]
   mainApplicationFile: local:///opt/spark/examples/spark/silver/process_all_events.py
+  sparkConf: {"spark.sql.shuffle.partitions" : "1000"}
   arguments: ["listen", {{var.value.get("bucket_name")}},  {{ds}}]
   sparkVersion: "3.1.1"
   restartPolicy:
     type: OnFailure
-    onFailureRetries: 3
+    onFailureRetries: 1
     onFailureRetryInterval: 10
     onSubmissionFailureRetries: 5
     onSubmissionFailureRetryInterval: 20
@@ -28,7 +29,7 @@ spec:
     serviceAccount: spark
   executor:
     cores: 1
-    instances: 1
-    memory: "512m"
+    instances: 4
+    memory: "1024m"
     labels:
       version: 3.1.1
