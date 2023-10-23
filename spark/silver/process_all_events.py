@@ -39,8 +39,6 @@ def main() -> None:
     processor = processor_class(bucket_name)
 
     spark = processor.get_spark_session(app_name="spark", master="local[*]")
-    num_cores = os.cpu_count()
-    spark.conf.set("spark.sql.shuffle.partitions", num_cores)
 
     sc = spark.sparkContext._jsc.hadoopConfiguration()
     sc.set("fs.s3a.access.key", access_key)
