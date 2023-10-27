@@ -78,7 +78,7 @@
             },
             "metricsSpec": [
                 {
-                    "type": "floatSum",
+                    "type": "count",
                     "name": "count",
                     "fieldName": "event_count"
                 }

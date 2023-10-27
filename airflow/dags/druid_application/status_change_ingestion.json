@@ -49,26 +49,30 @@
                     {
                         "name": "gender",
                         "type": "string"
+                    },
+                    {
+                        "name": "userAgent",
+                        "type": "string"
+                    },
+                    {
+                        "name": "registration",
+                        "type": "long"
                     }
                 ]
             },
             "metricsSpec": [
                 {
-                    "type": "stringAny",
-                    "name": "userAgent",
-                    "fieldName": "userAgent"
-                },
-                {
-                    "type": "longAny",
-                    "name": "registration",
-                    "fieldName": "registration"
-                },
-                {
-                    "type": "floatAny",
+                    "type": "count",
                     "name": "count",
                     "fieldName": "event_count"
                 }
-            ]
+            ],
+            "granularitySpec": {
+                "type": "uniform",
+                "segmentGranularity": "DAY",
+                "queryGranularity": "HOUR",
+                "rollup": true
+            }
         }
     }
 }

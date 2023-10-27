@@ -69,56 +69,54 @@
                     {
                         "name": "year",
                         "type": "float"
+                    },
+                    {
+                        "name": "userAgent",
+                        "type": "string"
+                    },
+                    {
+                        "name": "registration",
+                        "type": "long"
+                    },
+                    {
+                        "name": "duration",
+                        "type": "double"
+                    },
+                    {
+                        "name": "key",
+                        "type": "float"
+                    },
+                    {
+                        "name": "key_confidence",
+                        "type": "double"
+                    },
+                    {
+                        "name": "loudness",
+                        "type": "double"
+                    },
+                    {
+                        "name": "song_hotttnesss",
+                        "type": "double"
+                    },
+                    {
+                        "name": "tempo",
+                        "type": "double"
                     }
                 ]
             },
             "metricsSpec": [
                 {
-                    "type": "doubleAny",
-                    "name": "duration",
-                    "fieldname": "duration"
-                },
-                {
-                    "type" : "stringAny",
-                    "name" : "userAgent",
-                    "fieldName" : "userAgent"
-                },
-                {
-                    "type" : "longAny",
-                    "name" : "registration",
-                    "fieldName" : "registration"
-                },
-                {
-                    "type": "floatAny",
-                    "name": "key",
-                    "fieldName" : "key"
-                },
-                {
-                    "type": "doubleAny",
-                    "name": "key_confidence",
-                    "fieldName": "key_confidence"
-                },
-                {
-                    "type": "doubleAny",
-                    "name": "loudness",
-                    "fieldName": "loudness"
-                },
-                {
-                    "type": "doubleAny",
-                    "name": "song_hotness",
-                    "fieldName": "song_hotttnesss"
-                },
-                {
-                    "type": "doubleAny",
-                    "name": "tempo",
-                    "fieldName": "tempo"
-                },
-                {
-                    "type": "floatAny",
+                    "type": "count",
                     "name": "count",
                     "fieldName": "event_count"
                 }
-            ]
+            ],
+            "granularitySpec": {
+                "type": "uniform",
+                "segmentGranularity": "DAY",
+                "queryGranularity": "HOUR",
+                "rollup": true
+            }
         }
     }
 }
