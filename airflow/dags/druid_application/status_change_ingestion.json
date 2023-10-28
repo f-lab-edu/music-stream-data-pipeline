@@ -1,0 +1,78 @@
+{
+    "type": "index_parallel",
+    "spec": {
+        "ioConfig": {
+            "type": "index_parallel",
+            "inputSource": {
+                "type": "s3",
+                "prefixes": [
+                    "s3://{{var.value.get("bucket_name")}}/page_view/page_view_event/date_id={{yesterday_ds}}"
+                ],
+                "endpointConfig": {
+                    "url": "{{var.value.get("endpoint_url")}}",
+                    "signingRegion": "kr-standard"
+                },
+                "properties": {
+                    "accessKeyId": "{{var.value.get("obj_public_key")}}",
+                    "secretAccessKey": "{{var.value.get("obj_secret_key")}}"
+                }
+            },
+            "inputFormat": {
+                "type": "parquet"
+            },
+            "appendToExisting": true
+        },
+        "dataSchema": {
+            "dataSource": "status-change",
+            "timestampSpec": {
+                "column": "ts",
+                "format": "millis"
+            },
+            "dimensionsSpec": {
+                "dimensions": [
+                    {
+                        "name": "level",
+                        "type": "string"
+                    },
+                    {
+                        "name": "city",
+                        "type": "string"
+                    },
+                    {
+                        "name": "state",
+                        "type": "string"
+                    },
+                    {
+                        "name": "stateName",
+                        "type": "string"
+                    },
+                    {
+                        "name": "gender",
+                        "type": "string"
+                    },
+                    {
+                        "name": "userAgent",
+                        "type": "string"
+                    },
+                    {
+                        "name": "registration",
+                        "type": "long"
+                    }
+                ]
+            },
+            "metricsSpec": [
+                {
+                    "type": "count",
+                    "name": "count",
+                    "fieldName": "event_count"
+                }
+            ],
+            "granularitySpec": {
+                "type": "uniform",
+                "segmentGranularity": "DAY",
+                "queryGranularity": "HOUR",
+                "rollup": true
+            }
+        }
+    }
+}

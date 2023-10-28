@@ -12,6 +12,7 @@ spec:
   imagePullSecrets: ["my-registry-secret"]
   mainApplicationFile: local:///opt/spark/examples/spark/silver/process_all_events.py
   arguments: ["auth", {{var.value.get("bucket_name")}}, {{ds}}]
+  sparkConf: {"spark.sql.shuffle.partitions":200"}
   sparkVersion: "3.1.1"
   restartPolicy:
     type: OnFailure
@@ -28,7 +29,7 @@ spec:
     serviceAccount: spark
   executor:
     cores: 1
-    instances: 1
-    memory: "512m"
+    instances: 4
+    memory: "1024m"
     labels:
       version: 3.1.1

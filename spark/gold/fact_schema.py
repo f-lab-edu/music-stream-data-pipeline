@@ -4,6 +4,7 @@ from pyspark.sql.types import (
     StructField,
     StructType,
     LongType,
+    FloatType,
 )
 
 event_schema = {
@@ -21,6 +22,7 @@ event_schema = {
             StructField("userAgent", StringType(), True),
             StructField("gender", StringType(), True),
             StructField("registration", LongType(), True),
+            StructField("event_count", FloatType(), True),
         ]
     ),
 }
